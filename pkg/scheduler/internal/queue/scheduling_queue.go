@@ -36,6 +36,7 @@ import (
 	ktypes "k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/tools/cache"
+	"k8s.io/kubernetes/pkg/apis/scheduling"
 	"k8s.io/kubernetes/pkg/scheduler/algorithm/predicates"
 	priorityutil "k8s.io/kubernetes/pkg/scheduler/algorithm/priorities/util"
 	"k8s.io/kubernetes/pkg/scheduler/metrics"
@@ -160,8 +161,8 @@ func newPodInfoNoTimestamp(pod *v1.Pod) *podInfo {
 func activeQComp(podInfo1, podInfo2 interface{}) bool {
 	pInfo1 := podInfo1.(*podInfo)
 	pInfo2 := podInfo2.(*podInfo)
-	prio1 := util.GetPodPriority(pInfo1.pod)
-	prio2 := util.GetPodPriority(pInfo2.pod)
+	prio1 := scheduling.GetPodPriority(pInfo1.pod)
+	prio2 := scheduling.GetPodPriority(pInfo2.pod)
 	return (prio1 > prio2) || (prio1 == prio2 && pInfo1.timestamp.Before(pInfo2.timestamp))
 }
 
